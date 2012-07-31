@@ -104,7 +104,7 @@ int main()
 " ${stuff}_${value})
 ENDMACRO()
 
-SET(CMAKE_REQUIRED_INCLUDES ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR}/src)
+SET(CMAKE_REQUIRED_INCLUDES ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/src)
 FOREACH(arch X64 X86 ARM PPC PPCSPE MIPS)
   LJ_TEST_ARCH(TARGET_${arch})
   if(TARGET_${arch})
@@ -168,11 +168,9 @@ ENDIF()
 
 add_executable(minilua src/host/minilua.c)
 
-MESSAGE(STATUS "DUDE minilua ${CMAKE_SOURCE_DIR}/dynasm/dynasm.lua ${DASM_FLAGS} -o ${CMAKE_BINARY_DIR}/buildvm_arch.h ${CMAKE_SOURCE_DIR}/src/vm_${DASM_ARCH}.dasc")
-
-add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/buildvm_arch.h
-  COMMAND minilua ${CMAKE_SOURCE_DIR}/dynasm/dynasm.lua ${DASM_FLAGS} -o ${CMAKE_BINARY_DIR}/buildvm_arch.h ${CMAKE_SOURCE_DIR}/src/vm_${DASM_ARCH}.dasc
-  DEPENDS ${CMAKE_SOURCE_DIR}/dynasm/dynasm.lua minilua
+add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/buildvm_arch.h
+  COMMAND minilua ${CMAKE_CURRENT_SOURCE_DIR}/dynasm/dynasm.lua ${DASM_FLAGS} -o ${CMAKE_CURRENT_BINARY_DIR}/buildvm_arch.h ${CMAKE_CURRENT_SOURCE_DIR}/src/vm_${DASM_ARCH}.dasc
+  DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/dynasm/dynasm.lua minilua
 )
 
 SET(SRC_LJLIB src/lib_base.c src/lib_math.c src/lib_bit.c src/lib_string.c src/lib_table.c
