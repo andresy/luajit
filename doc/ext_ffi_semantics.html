@@ -11,8 +11,7 @@
 <style type="text/css">
 table.convtable { line-height: 1.2; }
 tr.convhead td { font-weight: bold; }
-td.convin { width: 11em; }
-td.convop { font-style: italic; width: 16em; }
+td.convop { font-style: italic; width: 40%; }
 </style>
 </head>
 <body>
@@ -26,6 +25,8 @@ td.convop { font-style: italic; width: 16em; }
 <ul><li>
 <a href="luajit.html">LuaJIT</a>
 <ul><li>
+<a href="http://luajit.org/download.html">Download <span class="ext">&raquo;</span></a>
+</li><li>
 <a href="install.html">Installation</a>
 </li><li>
 <a href="running.html">Running</a>
@@ -55,8 +56,6 @@ td.convop { font-style: italic; width: 16em; }
 <a href="faq.html">FAQ</a>
 </li><li>
 <a href="http://luajit.org/performance.html">Performance <span class="ext">&raquo;</span></a>
-</li><li>
-<a href="http://luajit.org/download.html">Download <span class="ext">&raquo;</span></a>
 </li><li>
 <a href="http://wiki.luajit.org/">Wiki <span class="ext">&raquo;</span></a>
 </li><li>
@@ -934,6 +933,22 @@ It's allowed to throw errors across a callback invocation, but it's not
 advisable in general. Do this only if you know the C&nbsp;function, that
 called the callback, copes with the forced stack unwinding and doesn't
 leak resources.
+</p>
+<p>
+One thing that's not allowed, is to let an FFI call into a C&nbsp;function
+get JIT-compiled, which in turn calls a callback, calling into Lua again.
+Usually this attempt is caught by the interpreter first and the
+C&nbsp;function is blacklisted for compilation.
+</p>
+<p>
+However, this heuristic may fail under specific circumstances: e.g. a
+message polling function might not run Lua callbacks right away and the call
+gets JIT-compiled. If it later happens to call back into Lua, you'll get a
+VM PANIC with the message <tt>"bad callback"</tt>. Then you'll need to
+manually turn off JIT-compilation with
+<a href="ext_jit.html#jit_onoff_func"><tt>jit.off()</tt></a> for the
+surrounding Lua function that invokes such a message polling function (or
+similar).
 </p>
 
 <h3 id="callback_resources">Callback resource handling</h3>
