@@ -287,4 +287,4 @@ CONFIGURE_FILE(cmake/LuaConfig.cmake.in "${Lua_INSTALL_FINDLUA_DIR}/FindLua.cmak
 INSTALL(FILES
   src/jit/bc.lua src/jit/v.lua src/jit/dump.lua src/jit/dis_x86.lua src/jit/dis_x64.lua src/jit/dis_arm.lua
   src/jit/dis_ppc.lua src/jit/dis_mips.lua src/jit/dis_mipsel.lua src/jit/bcsave.lua ${CMAKE_CURRENT_BINARY_DIR}/vmdef.lua
-  DESTINATION "${Lua_INSTALL_LUA_PATH}/jit")
+  DESTINATION "${Lua_INSTALL_LUA_PATH_SUBDIR}/jit")
